@@ -16,6 +16,10 @@ import { Button } from "../ui/button";
 
 const colorPresets = [
   {
+    name: "gray",
+    color: "#6b7280",
+  },
+  {
     name: "green",
     color: "#10b981",
   },
@@ -67,11 +71,9 @@ export default function UISettings({ className }: UISettingsProps) {
     root.setAttribute("data-color-scheme", settings.colorSchema);
 
     const currentColor =
-      colorPresets.find((t) => t.name === settings.preset)?.name ||
+      colorPresets.find((t) => t.color === settings.preset)?.color ||
       settings.preset;
 
-    root.style.setProperty("--primary-color", currentColor);
-    root.style.setProperty("--theme-primary", currentColor);
     root.style.setProperty(
       "--theme-primary-light",
       lightenColor(currentColor, 90)
@@ -86,6 +88,8 @@ export default function UISettings({ className }: UISettingsProps) {
       hexToRgba(currentColor, 0.2)
     );
 
+    root.style.setProperty("--primary-color", currentColor);
+    root.style.setProperty("--theme-primary", currentColor);
     // setting up the fonts
     const fontFamilyMap: Record<string, string> = {
       "public-sans": "var(--font-public-sans)",
@@ -246,7 +250,7 @@ export default function UISettings({ className }: UISettingsProps) {
               key={preset.name + index}
               onClick={() => {
                 const selectedPreset =
-                  settings.preset === preset.name ? "gray" : preset.name;
+                  settings.preset === preset.color ? "gray" : preset.color;
                 updateSettings({
                   ...settings,
                   preset: selectedPreset,

@@ -109,14 +109,14 @@ export function TopBarHeader() {
     <div
       className={cn(
         " ",
-        settings.colorSchema === "integrate"
+        settings.colorSchema === "integrate" && settings.mode === "light"
           ? "bg-primary text-primary-foreground"
           : "bg-sidebar"
       )}
     >
       <div className="container w-full  hidden justify-between items-center py-1 lg:flex">
         <TopBarHeaderMenubar />
-        <CommandMenu buttonClassName="h-8"  />
+        <CommandMenu buttonClassName="h-8" />
       </div>
     </div>
   );

@@ -102,7 +102,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       collapsible="icon"
       {...props}
       className={cn(
-        settings.colorSchema === "integrate"
+        settings.colorSchema === "integrate" && settings.mode === "light"
           ? "bg-primary text-primary-foreground"
           : "bg-sidebar"
       )}
@@ -112,8 +112,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           href={"/"}
           className={cn(
             "w-fit flex text-foreground font-black p-2 pb-0 mb-2 gap-2",
-            settings.colorSchema === "integrate"
-              ? " text-primary-foreground"
+            settings.colorSchema === "integrate" && settings.mode === "light"
+              ? "text-primary-foreground"
               : ""
           )}
           onClick={() => isMobile && setOpenMobile(!openMobile)}

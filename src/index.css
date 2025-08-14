@@ -4,8 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --primary-color: #10b981;
-  --theme-primary: #10b981;
+  --primary-color: #6b7280;
+  --theme-primary: #6b7280;
   --theme-primary-light: #f0fdf4;
   --theme-primary-border: #bbf7d0;
   --theme-primary-alpha: rgba(16, 185, 129, 0.2);
