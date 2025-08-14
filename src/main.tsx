@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
+import "./global/index.css";
 import App from "./App.tsx";
 import { routeTree } from "./routeTree.gen.ts";
 import { createRouter } from "@tanstack/react-router";
