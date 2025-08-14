@@ -72,7 +72,7 @@ const Shadow: React.FC = () => (
 
 /** NavIntegrateIcon — Sidebar blends into content */
 export const NavIntegrateIcon: React.FC<IconProps> = (props) => {
-  const { primary, stroke } = withDefaults(props);
+  const { primary, stroke, secondary } = withDefaults(props);
   return (
     <Svg role="img" aria-label="Integrated Nav" stroke={stroke}>
       <defs>
@@ -80,7 +80,7 @@ export const NavIntegrateIcon: React.FC<IconProps> = (props) => {
       </defs>
 
       {/* App window */}
-      <rect x={3} y={3} width={90} height={90} rx={10} fill={stroke} />
+      <rect x={3} y={3} width={90} height={90} rx={10} fill={secondary} />
       {/* Sidebar (integrated) */}
       <rect x={16} y={22} width={20} height={52} rx={6} fill={primary} />
       {/* Content blocks */}
@@ -281,34 +281,33 @@ export const PresetSwatch: React.FC<{
   size?: number; // overall size
   className?: string;
 }> = ({ color, tint, className }) => {
-  const bg = tint ?? "#EEF2FF"; // soft tint
   return (
     <Svg className={className} role="img" aria-label="Preset swatch">
-      <rect x={3} y={3} width={90} height={90} fill={bg} rx={10} />
+      <rect x={3} y={3} width={90} height={90} fill={tint} rx={12} />
 
       <rect
-        x={22}
-        y={22}
-        width={52}
-        height={36}
+        x={12}
+        y={12}
+        width={72}
+        height={72}
         rx={10}
         fill="#FFFFFF"
         opacity={0.95}
       />
-      <rect x={16} y={28} width={18} height={24} rx={6} fill={color} />
+      <rect x={20} y={28} width={18} height={24} rx={6} fill={color} />
       <rect
-        x={38}
+        x={42}
         y={30}
-        width={28}
+        width={30}
         height={6}
         rx={5}
         fill={color}
         opacity={0.4}
       />
       <rect
-        x={38}
+        x={42}
         y={40}
-        width={28}
+        width={30}
         height={10}
         rx={5}
         fill={color}

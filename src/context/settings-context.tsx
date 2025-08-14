@@ -7,8 +7,12 @@ import { useCookie } from "react-use";
 export const defaultSettings: SettingsType = {
   theme: "zinc",
   mode: "system",
-  radius: 0.5,
   layout: "vertical",
+  colorSchema: "apparent",
+  preset: "green",
+  fontFamily: "public-sans",
+  customThemes: [],
+  customFonts: [],
 };
 
 export const SettingsContext = createContext<

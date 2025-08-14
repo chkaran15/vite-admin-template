@@ -18,6 +18,7 @@ import type { NavigationNestedItem, NavigationRootItem } from "@/types";
 import { Link } from "@tanstack/react-router";
 import React from "react";
 import { CommandMenu } from "../command-menu";
+import { useSettings } from "@/hooks/use-settings";
 
 export function TopBarHeaderMenubar() {
   const renderMenuItem = (item: NavigationRootItem | NavigationNestedItem) => {
@@ -28,7 +29,7 @@ export function TopBarHeaderMenubar() {
     if (item.items) {
       return (
         <MenubarSub>
-          <MenubarSubTrigger className="gap-2">
+          <MenubarSubTrigger>
             {"iconName" in item && (
               <DynamicIcon name={item.iconName} className="me-2 h-4 w-4" />
             )}
@@ -80,7 +81,7 @@ export function TopBarHeaderMenubar() {
   };
 
   return (
-    <Menubar className="border-0">
+    <Menubar className="border-0 bg-transparent">
       {navigationsData.map((nav) => {
         const title = nav.title;
 
@@ -102,10 +103,21 @@ export function TopBarHeaderMenubar() {
 }
 
 export function TopBarHeader() {
+  const { settings } = useSettings();
+
   return (
-    <div className=" w-full container hidden justify-between items-center py-1 lg:flex">
-      <TopBarHeaderMenubar />
-      <CommandMenu buttonClassName="h-8" />
+    <div
+      className={cn(
+        " ",
+        settings.colorSchema === "integrate"
+          ? "bg-primary text-primary-foreground"
+          : "bg-sidebar"
+      )}
+    >
+      <div className="container w-full  hidden justify-between items-center py-1 lg:flex">
+        <TopBarHeaderMenubar />
+        <CommandMenu buttonClassName="h-8"  />
+      </div>
     </div>
   );
 }

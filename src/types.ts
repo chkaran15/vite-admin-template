@@ -12,11 +12,36 @@ export type RadiusType = (typeof radii)[number];
 
 export type ThemeType = keyof typeof themes;
 
+interface CustomTheme {
+  id: string;
+  name: string;
+  color: string;
+}
+
+interface CustomFont {
+  id: string;
+  name: string;
+  family: string;
+}
+
+export type ColorSchema = "integrate" | "apparent";
+export type Preset = "green" | "blue" | "purple" | "orange" | "red" | string;
+export type FontFamily =
+  | "public-sans"
+  | "inter"
+  | "dm-sans"
+  | "nunito-sans"
+  | string;
+
 export type SettingsType = {
   theme: ThemeType;
   mode: ModeType;
-  radius: RadiusType;
   layout: LayoutType;
+  colorSchema: ColorSchema;
+  customThemes: CustomTheme[];
+  preset: Preset;
+  customFonts: CustomFont[];
+  fontFamily: FontFamily;
 };
 
 export interface IconProps extends SVGAttributes<SVGElement> {

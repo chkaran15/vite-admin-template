@@ -26,6 +26,7 @@ import { isActivePathname } from "@/lib/isActivePathname";
 import { CommandMenu } from "./command-menu";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { navigationsData } from "@/data/navigationData";
+import { cn } from "@/lib/utils";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { openMobile, setOpenMobile, isMobile } = useSidebar();
@@ -97,11 +98,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   };
 
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar
+      collapsible="icon"
+      {...props}
+      className={cn(
+        settings.colorSchema === "integrate"
+          ? "bg-primary text-primary-foreground"
+          : "bg-sidebar"
+      )}
+    >
       <SidebarHeader>
         <a
           href={"/"}
-          className="w-fit flex text-foreground font-black p-2 pb-0 mb-2 gap-2"
+          className={cn(
+            "w-fit flex text-foreground font-black p-2 pb-0 mb-2 gap-2",
+            settings.colorSchema === "integrate"
+              ? " text-primary-foreground"
+              : ""
+          )}
           onClick={() => isMobile && setOpenMobile(!openMobile)}
         >
           <img
@@ -121,7 +135,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             const title = nav.title;
             return (
               <SidebarGroup key={nav.title}>
-                <SidebarGroupLabel>{title}</SidebarGroupLabel>
+                <SidebarGroupLabel
+                  className={cn(
+                    settings.colorSchema === "integrate"
+                      ? " text-primary-foreground"
+                      : ""
+                  )}
+                >
+                  {title}
+                </SidebarGroupLabel>
                 <SidebarGroupContent>
                   <SidebarMenu>
                     {nav.items.map((item) => (

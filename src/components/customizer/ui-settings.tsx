@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Info, RotateCcw } from "lucide-react";
 import {
   NavIntegrateIcon,
@@ -11,49 +11,44 @@ import { useSettings } from "@/hooks/use-settings";
 import { useSidebar } from "../ui/sidebar";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
+import { hexToRgba, lightenColor } from "@/lib/color-calculator";
+import { Button } from "../ui/button";
 
-// OKLCH color presets with proper contrast
 const colorPresets = [
   {
-    name: "Green",
-    primary: "oklch(0.646 0.222 142.495)", // green-500
-    secondary: "oklch(0.961 0.044 142.495)", // green-50
-    tint: "oklch(0.984 0.022 142.495)", // green-25
+    name: "green",
+    color: "#10b981",
   },
   {
-    name: "Blue",
-    primary: "oklch(0.6 0.118 264.052)", // blue-500
-    secondary: "oklch(0.97 0.024 264.052)", // blue-50
-    tint: "oklch(0.985 0.012 264.052)", // blue-25
+    name: "blue",
+    color: "#3b82f6",
   },
   {
-    name: "Purple",
-    primary: "oklch(0.569 0.196 293.89)", // purple-500
-    secondary: "oklch(0.976 0.039 293.89)", // purple-50
-    tint: "oklch(0.988 0.02 293.89)", // purple-25
+    name: "purple",
+    color: "#8b5cf6",
   },
   {
-    name: "Blue2",
-    primary: "oklch(0.6 0.118 264.052)", // blue-500 (duplicate for 6 total)
-    secondary: "oklch(0.97 0.024 264.052)", // blue-50
-    tint: "oklch(0.985 0.012 264.052)", // blue-25
+    name: "orange",
+    color: "#f59e0b",
   },
   {
-    name: "Orange",
-    primary: "oklch(0.705 0.169 70.67)", // orange-500
-    secondary: "oklch(0.98 0.034 70.67)", // orange-50
-    tint: "oklch(0.99 0.017 70.67)", // orange-25
+    name: "red",
+    color: "#ef4444",
   },
   {
-    name: "Red",
-    primary: "oklch(0.637 0.237 25.331)", // red-500
-    secondary: "oklch(0.98 0.047 25.331)", // red-50
-    tint: "oklch(0.99 0.024 25.331)", // red-25
+    name: "darkBlue",
+    color: "#002aff",
   },
 ];
 
+const fontOptions = [
+  { id: "public-sans", name: "Public Sans", preview: "Aa" },
+  { id: "inter", name: "Inter", preview: "Aa" },
+  { id: "dm-sans", name: "DM Sans", preview: "Aa" },
+  { id: "nunito-sans", name: "Nunito Sans", preview: "Aa" },
+];
+
 type ColorMode = "integrate" | "apparent";
-type LayoutType = "sidebar" | "topbar" | "card";
 
 interface UISettingsProps {
   className?: string;
@@ -64,10 +59,53 @@ export default function UISettings({ className }: UISettingsProps) {
     useState<ColorMode>("integrate");
   const { settings, updateSettings } = useSettings();
   const { setOpen } = useSidebar();
-  const [selectedLayout, setSelectedLayout] = useState<LayoutType>("sidebar");
-  const [selectedPreset, setSelectedPreset] = useState(2); // Purple as default
 
-  const currentPreset = colorPresets[selectedPreset];
+  useEffect(() => {
+    const root = document.documentElement;
+
+    // Apply color scheme
+    root.setAttribute("data-color-scheme", settings.colorSchema);
+
+    const currentColor =
+      colorPresets.find((t) => t.name === settings.preset)?.name ||
+      settings.preset;
+
+    root.style.setProperty("--primary-color", currentColor);
+    root.style.setProperty("--theme-primary", currentColor);
+    root.style.setProperty(
+      "--theme-primary-light",
+      lightenColor(currentColor, 90)
+    );
+
+    root.style.setProperty(
+      "--theme-primary-border",
+      lightenColor(currentColor, 70)
+    );
+    root.style.setProperty(
+      "--theme-primary-alpha",
+      hexToRgba(currentColor, 0.2)
+    );
+
+    // setting up the fonts
+    const fontFamilyMap: Record<string, string> = {
+      "public-sans": "var(--font-public-sans)",
+      inter: "var(--font-inter)",
+      "dm-sans": "var(--font-dm-sans)",
+      "nunito-sans": "var(--font-nunito-sans)",
+    };
+
+    // Add custom fonts to the map
+    fontOptions.forEach((font) => {
+      fontFamilyMap[font.name] = font.name;
+    });
+
+    const selectedFont =
+      fontFamilyMap[settings.fontFamily] || settings.fontFamily;
+    root.style.setProperty("--font-family-primary", selectedFont);
+
+    // Save settings to localStorage
+    localStorage.setItem("dashboard-settings", JSON.stringify(settings));
+  }, [settings]);
 
   return (
     <div className={`space-y-8  ${className}`}>
@@ -86,70 +124,55 @@ export default function UISettings({ className }: UISettingsProps) {
           <div className="flex flex-row flex-wrap gap-4">
             <button
               onClick={() => {
-                setSelectedLayout("sidebar");
                 setOpen(true);
                 updateSettings({ ...settings, layout: "vertical" });
               }}
               className={`transition-all rounded-lg hover:scale-105 border ${
-                selectedLayout === "sidebar" ? "ring-2 ring-primary  " : ""
+                settings.layout === "vertical" ? "ring-2 ring-primary  " : ""
               }`}
             >
               <LayoutSidebarLeft
                 primary={
-                  selectedLayout === "sidebar"
-                    ? currentPreset.primary
+                  settings.layout === "vertical"
+                    ? settings.preset
                     : "oklch(0.5 0 0)"
                 }
-                secondary={
-                  selectedLayout === "sidebar"
-                    ? currentPreset.secondary
-                    : "oklch(0.9 0 0)"
-                }
+                secondary={"oklch(0.9 0 0)"}
               />
             </button>
             <button
               onClick={() => {
-                setSelectedLayout("topbar");
                 updateSettings({ ...settings, layout: "horizontal" });
               }}
               className={`transition-all rounded-lg hover:scale-105 border ${
-                selectedLayout === "topbar" ? "ring-2 ring-primary  " : ""
+                settings.layout === "horizontal" ? "ring-2 ring-primary  " : ""
               }`}
             >
               <LayoutTopbar
                 primary={
-                  selectedLayout === "topbar"
-                    ? currentPreset.primary
+                  settings.layout === "horizontal"
+                    ? settings.preset
                     : "oklch(0.5 0 0)"
                 }
-                secondary={
-                  selectedLayout === "topbar"
-                    ? currentPreset.secondary
-                    : "oklch(0.9 0 0)"
-                }
+                secondary={"oklch(0.9 0 0)"}
               />
             </button>
             <button
               onClick={() => {
-                setSelectedLayout("card");
                 setOpen(false);
                 updateSettings({ ...settings, layout: "vertical" });
               }}
               className={`transition-all rounded-lg hover:scale-105 border ${
-                selectedLayout === "card" ? "ring-2 ring-primary  " : ""
+                settings.layout === "vertical" ? "ring-2 ring-primary  " : ""
               }`}
             >
               <LayoutCard
                 primary={
-                  selectedLayout === "card"
-                    ? currentPreset.primary
+                  settings.layout === "vertical"
+                    ? settings.preset
                     : "oklch(0.5 0 0)"
                 }
-                secondary={
-                  selectedLayout === "card"
-                    ? currentPreset.secondary
-                    : "oklch(0.9 0 0)"
-                }
+                secondary={"oklch(0.9 0 0)"}
               />
             </button>
           </div>
@@ -162,27 +185,11 @@ export default function UISettings({ className }: UISettingsProps) {
 
           <div className="flex flex-row flex-wrap gap-6">
             <button
-              aria-label="customized-integrate"
-              onClick={() => setSelectedColorMode("integrate")}
-              className={`transition-all rounded-lg hover:scale-105 `}
-            >
-              <div
-                className={cn(
-                  selectedColorMode === "integrate"
-                    ? "ring-2 ring-primary  border rounded-lg"
-                    : ""
-                )}
-              >
-                <NavIntegrateIcon
-                  primary={currentPreset.primary}
-                  secondary={currentPreset.secondary}
-                />
-              </div>
-              <span className="capitalize text-xs ">integrate</span>
-            </button>
-            <button
               aria-label="customized-apparent"
-              onClick={() => setSelectedColorMode("apparent")}
+              onClick={() => {
+                setSelectedColorMode("apparent");
+                updateSettings({ ...settings, colorSchema: "apparent" });
+              }}
               className={`transition-all rounded-lg hover:scale-105 `}
             >
               <div
@@ -194,10 +201,33 @@ export default function UISettings({ className }: UISettingsProps) {
               >
                 <NavIntegrateIcon
                   primary={"#FFFFFF"}
-                  secondary={currentPreset.secondary}
+                  secondary={"oklch(0.9 0 0)"}
                 />
               </div>
               <span className="capitalize text-xs">apparent</span>
+            </button>
+
+            <button
+              aria-label="customized-integrate"
+              onClick={() => {
+                setSelectedColorMode("integrate");
+                updateSettings({ ...settings, colorSchema: "integrate" });
+              }}
+              className={`transition-all rounded-lg hover:scale-105 `}
+            >
+              <div
+                className={cn(
+                  selectedColorMode === "integrate"
+                    ? "ring-2 ring-primary  border rounded-lg"
+                    : ""
+                )}
+              >
+                <NavIntegrateIcon
+                  primary={settings.preset}
+                  secondary={"oklch(0.9 0 0)"}
+                />
+              </div>
+              <span className="capitalize text-xs ">integrate</span>
             </button>
           </div>
         </section>
@@ -213,18 +243,53 @@ export default function UISettings({ className }: UISettingsProps) {
         <div className="flex flex-row flex-wrap  gap-4 mt-2 p-4  ">
           {colorPresets.map((preset, index) => (
             <button
-              key={preset.name}
-              onClick={() => setSelectedPreset(index)}
+              key={preset.name + index}
+              onClick={() => {
+                const selectedPreset =
+                  settings.preset === preset.name ? "gray" : preset.name;
+                updateSettings({
+                  ...settings,
+                  preset: selectedPreset,
+                });
+              }}
               className={`transition-all rounded-lg hover:scale-105 border ${
-                selectedPreset === index ? "ring-2 ring-primary " : ""
+                settings.preset === preset.name ? "ring-2 ring-primary " : ""
               }`}
             >
               <PresetSwatch
-                color={preset.primary}
-                tint={preset.tint}
+                color={preset.color}
+                tint={"oklch(0.9 0 0)"}
                 className="overflow-hidden"
               />
             </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-1.5 border border-border rounded-lg relative ">
+        <Badge className="text-sm absolute -top-4 left-2">
+          <span>Fonts</span>
+        </Badge>
+
+        <div className="flex flex-row flex-wrap  gap-4 mt-2 p-4  ">
+          {fontOptions?.map((font) => (
+            <Button
+              key={font.id}
+              variant={
+                settings.fontFamily === font.name ? "default" : "outline"
+              }
+              size="sm"
+              onClick={() => {
+                updateSettings({
+                  ...settings,
+                  fontFamily: font.name,
+                });
+              }}
+              className="h-16 min-w-[120px]  flex flex-col items-center justify-center gap-1"
+            >
+              <div className="text-lg font-medium">{font.preview}</div>
+              <div className="text-xs opacity-70">{font.name}</div>
+            </Button>
           ))}
         </div>
       </div>

@@ -136,7 +136,7 @@ export function CommandMenu({
         variant="outline"
         size="icon"
         className={cn(
-          "max-w-64 w-full justify-start px-2 rounded-md bg-muted/50 text-muted-foreground",
+          "max-w-64 w-full justify-start px-2 rounded-md bg-muted text-muted-foreground",
 
           buttonClassName
         )}
