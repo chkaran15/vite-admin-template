@@ -131,7 +131,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </a>
         <CommandMenu buttonClassName="max-w-full" />
       </SidebarHeader>
-      <ScrollArea>
+      <ScrollArea className="h-fit overflow-y-scroll">
         <SidebarContent>
           {navigationsData.map((nav) => {
             const title = nav.title;
