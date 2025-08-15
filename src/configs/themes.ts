@@ -29,7 +29,7 @@ export const themes = {
     label: "Green",
     activeColor: {
       light: "142.1 76.2% 36.3%",
-      dark: "142.1 70.6% 45.3%",
+    dark: "142.1 70.6% 45.3%",
       foreground: "355.7 100% 97.3%",
     },
   },

@@ -1,8 +1,6 @@
 import { NotificationDropdown } from "@/components/layout/notification-dropdown";
 import { UserDropdown } from "@/components/layout/user-dropdown";
-
 import { ToggleMobileSidebar } from "../toggle-mobile-sidebar";
-import { FullScreenToggle } from "../full-screen-toggle";
 import { ModeTrigger } from "@/components/mode-trigger";
 
 export function BottomBarHeader() {
@@ -20,11 +18,10 @@ export function BottomBarHeader() {
           width={24}
           className="dark:invert rounded-full"
         />
-        <span>Shadboard</span>
+        <span>Admin Template</span>
       </a>
       <div className="flex gap-2">
         <NotificationDropdown />
-        <FullScreenToggle />
         <ModeTrigger />
         <UserDropdown />
       </div>

@@ -123,14 +123,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             alt=""
             height={24}
             width={24}
-            className="dark:invert rounded-full"
+            className=" rounded-full min-w-6 min-h-6"
           />
-          <span>Shadboard</span>
+          <span>Admin Template</span>
         </a>
         <CommandMenu buttonClassName="max-w-full" />
       </SidebarHeader>
       <ScrollArea>
-        <SidebarContent className="gap-0">
+        <SidebarContent>
           {navigationsData.map((nav) => {
             const title = nav.title;
             return (

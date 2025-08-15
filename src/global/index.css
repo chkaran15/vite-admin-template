@@ -227,6 +227,7 @@
   --fc-today-bg-color: hsl(var(--primary) / 0.15);
   --fc-now-indicator-color: hsl(var(--destructive));
 }
+
 .dark {
   --background: 240 10% 3.9%;
   --foreground: 0 0% 98%;

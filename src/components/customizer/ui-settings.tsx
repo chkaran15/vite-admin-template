@@ -1,4 +1,4 @@
-import { Info, RotateCcw } from "lucide-react";
+import { Info } from "lucide-react";
 import {
   NavIntegrateIcon,
   LayoutSidebarLeft,
@@ -27,7 +27,7 @@ interface UISettingsProps {
 
 export default function UISettings({ className }: UISettingsProps) {
   const { settings, updateSettings } = useSettings();
-  const { setOpen } = useSidebar();
+  const { setOpen, open } = useSidebar();
 
   return (
     <div className={`space-y-8  ${className}`}>
@@ -50,13 +50,15 @@ export default function UISettings({ className }: UISettingsProps) {
                 updateSettings({ ...settings, layout: "vertical" });
               }}
               className={`transition-all rounded-lg hover:scale-105 border ${
-                settings.layout === "vertical" ? "ring-2 ring-primary  " : ""
+                settings.layout === "vertical" && open
+                  ? "ring-2 ring-primary  "
+                  : ""
               }`}
             >
               <LayoutSidebarLeft
                 primary={
                   settings.layout === "vertical"
-                    ? settings.preset
+                    ? `hsl(${settings.preset})`
                     : "oklch(0.5 0 0)"
                 }
                 secondary={"oklch(0.9 0 0)"}
@@ -73,7 +75,7 @@ export default function UISettings({ className }: UISettingsProps) {
               <LayoutTopbar
                 primary={
                   settings.layout === "horizontal"
-                    ? settings.preset
+                    ? `hsl(${settings.preset})`
                     : "oklch(0.5 0 0)"
                 }
                 secondary={"oklch(0.9 0 0)"}
@@ -85,13 +87,15 @@ export default function UISettings({ className }: UISettingsProps) {
                 updateSettings({ ...settings, layout: "vertical" });
               }}
               className={`transition-all rounded-lg hover:scale-105 border ${
-                settings.layout === "vertical" ? "ring-2 ring-primary  " : ""
+                settings.layout === "vertical" && !open
+                  ? "ring-2 ring-primary  "
+                  : ""
               }`}
             >
               <LayoutCard
                 primary={
                   settings.layout === "vertical"
-                    ? settings.preset
+                    ? `hsl(${settings.preset})`
                     : "oklch(0.5 0 0)"
                 }
                 secondary={"oklch(0.9 0 0)"}
@@ -143,7 +147,7 @@ export default function UISettings({ className }: UISettingsProps) {
                 )}
               >
                 <NavIntegrateIcon
-                  primary={settings.preset}
+                  primary={`hsl(${settings.preset})`}
                   secondary={"oklch(0.9 0 0)"}
                 />
               </div>
@@ -156,7 +160,6 @@ export default function UISettings({ className }: UISettingsProps) {
       {/* Presets Section */}
       <div className="space-y-1.5 border border-border rounded-lg relative ">
         <Badge className="text-sm absolute -top-4 left-2">
-          <RotateCcw size={14} className="opacity-70" />
           <span>Presets</span>
         </Badge>
 
@@ -169,7 +172,7 @@ export default function UISettings({ className }: UISettingsProps) {
                 onClick={() => {
                   updateSettings({
                     ...settings,
-                    preset: name,
+                    preset: color,
                     theme: name as ThemeType,
                   });
                 }}
