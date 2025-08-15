@@ -11,7 +11,7 @@ export function VerticalLayoutHeader() {
         <ToggleMobileSidebar />
 
         <div className="grow flex justify-end gap-2 pr-2">
-          <SidebarTrigger className="hidden lg:flex lg:me-auto" />
+          <SidebarTrigger className="hidden lg:flex lg:me-auto  lg:absolute lg:-left-4 lg:top-3" />
           <NotificationDropdown />
           <ModeTrigger />
           <UserDropdown />

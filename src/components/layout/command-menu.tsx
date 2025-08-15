@@ -137,13 +137,12 @@ export function CommandMenu({
         size="icon"
         className={cn(
           "max-w-64 w-full justify-start px-2 rounded-md bg-muted text-muted-foreground",
-
           buttonClassName
         )}
         onClick={() => setOpen(true)}
         {...props}
       >
-        <Search className="me-2 h-4 w-4" />
+        <Search className=" h-5 w-5 " />
         <span className={cn(sidebarOpen ? "block" : "hidden")}>Search</span>
         <Keyboard className={cn("ms-auto ", sidebarOpen ? "block" : "hidden")}>
           K

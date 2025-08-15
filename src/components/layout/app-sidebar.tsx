@@ -84,7 +84,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           isActive={isActive}
           onClick={() => setOpenMobile(!openMobile)}
           asChild
-          className="sidebar-without-collapsible"
+          className="sidebar-without-collapsible "
         >
           <a href={item.href}>
             {"iconName" in item && (
@@ -129,7 +129,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           />
           {iconOpen && <span className="text-nowrap">Admin Template</span>}
         </a>
-        <CommandMenu buttonClassName="max-w-full" />
+        <CommandMenu
+          buttonClassName={cn(
+            "max-w-full",
+            !iconOpen && " px-3"
+          )}
+        />
       </SidebarHeader>
       <ScrollArea className="h-fit overflow-y-scroll">
         <SidebarContent>
@@ -152,7 +157,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     {nav.items.map((item) => (
                       <SidebarMenuItem
                         key={item.title}
-                        className="sidebar-menu-items"
+                        className="sidebar-menu-items mx-1"
                       >
                         {renderMenuItem(item)}
                       </SidebarMenuItem>

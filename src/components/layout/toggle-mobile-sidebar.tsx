@@ -1,4 +1,4 @@
-import { PanelLeft } from "lucide-react";
+import { AlignLeft } from "lucide-react";
 import { useSidebar } from "../ui/sidebar";
 import { Button } from "../ui/button";
 
@@ -9,12 +9,12 @@ export function ToggleMobileSidebar() {
     return (
       <Button
         data-sidebar="trigger"
-        variant="ghost"
+        variant="secondary"
         size="icon"
         onClick={() => setOpenMobile(!openMobile)}
         aria-label="Toggle sidebar"
       >
-        <PanelLeft className="h-4 w-4" />
+        <AlignLeft className="h-5 w-5" />
       </Button>
     );
   }
